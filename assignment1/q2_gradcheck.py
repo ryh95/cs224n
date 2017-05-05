@@ -16,6 +16,7 @@ def gradcheck_naive(f, x):
 
     rndstate = random.getstate()
     random.setstate(rndstate)
+    # grad is our provided grad result so it could be correct or wrong
     fx, grad = f(x) # Evaluate function value at original point
     h = 1e-4        # Do not change this!
 
