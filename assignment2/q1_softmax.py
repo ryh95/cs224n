@@ -31,7 +31,7 @@ def softmax(x):
     # refer: http: // cs231n.github.io / python - numpy - tutorial /  # numpy
     x = tf.transpose(tf.transpose(x) - n_samples_max)
 
-    out = tf.exp(x)/tf.reduce_sum(tf.exp(x),1)
+    out = tf.exp(x)/tf.reshape(tf.reduce_sum(tf.exp(x),1),shape=[-1,1])
     ### END YOUR CODE
 
     return out
