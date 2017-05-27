@@ -120,6 +120,11 @@ class ParserModel(Model):
         embedding_size = self.config.embed_size
         embeddings = tf.reshape(input_tensor,shape=(-1,n_features*embedding_size))
 
+        # debug
+        self.input_tensor = input_tensor
+        self.embeddings = embeddings
+
+
         ### END YOUR CODE
         return embeddings
 
@@ -169,6 +174,12 @@ class ParserModel(Model):
         pred = tf.matmul(h_drop,U)+b2
 
         ### END YOUR CODE
+
+        # debug
+        self.pred = pred
+        self.xavier_W = xavier_W
+        self.xavier_U = xavier_U
+
         return pred
 
     def add_loss_op(self, pred):
@@ -214,6 +225,10 @@ class ParserModel(Model):
         ### YOUR CODE HERE
 
         adam = tf.train.AdamOptimizer(learning_rate=self.config.lr)
+
+        # debug
+        # print tf.trainable_variables()
+
         train_op = adam.minimize(loss)
 
         ### END YOUR CODE
@@ -222,6 +237,11 @@ class ParserModel(Model):
     def train_on_batch(self, sess, inputs_batch, labels_batch):
         feed = self.create_feed_dict(inputs_batch, labels_batch=labels_batch,
                                      dropout=self.config.dropout)
+
+        # debug
+        # print feed
+        emb,pred = sess.run([self.embeddings,self.pred],feed_dict=feed)
+        xavier_W,xavier_U = sess.run([self.xavier_W,self.xavier_U],feed_dict=feed)
         _, loss = sess.run([self.train_op, self.loss], feed_dict=feed)
         return loss
 
