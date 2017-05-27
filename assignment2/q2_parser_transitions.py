@@ -87,7 +87,8 @@ def minibatch_parse(sentences, model, batch_size):
     # shallow copy of partial_parses
     unfinished_parses = partial_parses
 
-    dependencies = []
+    unfinished_parses2ids = {pp:i for i,pp in enumerate(unfinished_parses)}
+    dependencies = [0]*len(sentences)
     while len(unfinished_parses) != 0:
         mini_batch_parses = unfinished_parses[:batch_size]
         # one step transition for all mini batch sentences/parses
@@ -101,7 +102,7 @@ def minibatch_parse(sentences, model, batch_size):
         for pp in mini_batch_parses:
             if len(pp.stack) == 1 and len(pp.buffer) == 0:
                 # save result
-                dependencies.append(tuple(pp.dependencies))
+                dependencies[unfinished_parses2ids[pp]] = tuple(pp.dependencies)
                 # remove
                 unfinished_parses.remove(pp)
 
