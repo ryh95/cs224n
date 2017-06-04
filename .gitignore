@@ -4,3 +4,4 @@
 glove.*
 stanfordSentimentTreebank/
 *.npy
+.DS_Store
