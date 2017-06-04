@@ -14,6 +14,7 @@ import logging
 from datetime import datetime
 
 import tensorflow as tf
+import numpy as np
 
 from util import print_sentence, write_conll
 from data_util import load_and_preprocess_data, load_embeddings, read_conll, ModelHelper
@@ -97,7 +98,15 @@ def make_windowed_data(data, start, end, window_size = 1):
     windowed_data = []
     for sentence, labels in data:
     ### YOUR CODE HERE (5-20 lines)
-
+        pad_sentence = [start]*window_size+sentence+[end]*window_size
+        for idx,features in enumerate(pad_sentence[window_size:-window_size]):
+            idx = idx + window_size
+            # concatenate
+            x = pad_sentence[idx-window_size:idx]+[features]+pad_sentence[idx+1:idx+window_size+1]
+            # turn 2d array to 1d
+            x = np.array(x).reshape(-1).tolist()
+            y = labels[idx-window_size]
+            windowed_data.append((x,y))
     ### END YOUR CODE
     return windowed_data
 
