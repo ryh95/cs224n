@@ -1,0 +1,2 @@
+model_checkpoint_path: "/output/results/rnn/20170610_132547/model.weights"
+all_model_checkpoint_paths: "/output/results/rnn/20170610_132547/model.weights"
