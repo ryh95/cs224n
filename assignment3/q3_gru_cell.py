@@ -65,7 +65,32 @@ class GRUCell(tf.contrib.rnn.RNNCell):
         # be defined elsewhere!
         with tf.variable_scope(scope):
             ### YOUR CODE HERE (~20-30 lines)
-            pass
+
+            W_z = tf.get_variable('W_z', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.state_size, self.state_size))
+            U_z = tf.get_variable('U_z', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.input_size, self.state_size))
+            b_z = tf.get_variable('b_z', initializer=tf.contrib.layers.xavier_initializer(),
+                                shape=(self.state_size,))
+            W_r = tf.get_variable('W_r', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.state_size, self.state_size))
+            U_r = tf.get_variable('U_r', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.input_size, self.state_size))
+            b_r = tf.get_variable('b_r', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.state_size,))
+            W_o = tf.get_variable('W_o', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.state_size, self.state_size))
+            U_o = tf.get_variable('U_o', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.input_size, self.state_size))
+            b_o = tf.get_variable('b_o', initializer=tf.contrib.layers.xavier_initializer(),
+                                  shape=(self.state_size,))
+
+            z_t = tf.sigmoid(tf.matmul(inputs,U_z) + tf.matmul(state,W_z) + b_z)
+            r_t = tf.sigmoid(tf.matmul(inputs,U_r) + tf.matmul(state,W_r) + b_r)
+            o_t = tf.tanh(tf.matmul(inputs,U_o) + tf.matmul(tf.multiply(r_t,state),W_o) + b_o)
+            new_state = tf.multiply(z_t,state) + tf.multiply(1-z_t,o_t)
+
+
             ### END YOUR CODE ###
         # For a GRU, the output and state are the same (N.B. this isn't true
         # for an LSTM, though we aren't using one of those in our
