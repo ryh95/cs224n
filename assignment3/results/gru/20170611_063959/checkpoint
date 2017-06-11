@@ -1,0 +1,2 @@
+model_checkpoint_path: "/output/results/gru/20170611_063959/model.weights"
+all_model_checkpoint_paths: "/output/results/gru/20170611_063959/model.weights"
